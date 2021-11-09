@@ -25,5 +25,16 @@ jobs:
       - name: "Build app"
         run: npm run build
 
-      - name: "Run tests"
-        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      # - name: "Run tests"
+      #   run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+
+      - name: "Install Ruby"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: "Install DPL"
+        run: gem install dpl
+
+      - name: "Deploy to Heroku"
+        run: dpl --provider=heroku --app=${{secrets.HEROKU_APP}} --api-key=${{secrets.HEROKU_API_KEY}} --skip_cleanup=true
